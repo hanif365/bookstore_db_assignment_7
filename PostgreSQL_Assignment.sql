@@ -1,6 +1,6 @@
--- Active: 1742265938903@@127.0.0.1@5432@bookstore_db
+-- Active: 1742821824269@@127.0.0.1@5432@bookstore_db
 
--- --------------------Table Creation--------------------
+----------------------- Table Creation -----------------------
 
 -- Create the books table
 CREATE TABLE books (
@@ -26,10 +26,11 @@ CREATE TABLE orders (
     customer_id INTEGER NOT NULL REFERENCES customers (id),
     book_id INTEGER NOT NULL REFERENCES books (id),
     quantity INTEGER NOT NULL CHECK (quantity > 0),
-    order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    order_date DATE NOT NULL DEFAULT CURRENT_DATE
+    -- order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- --------------------Sample Data Insertion--------------------
+----------------------- Sample Data Insertion -----------------------
 
 -- Insert sample data into books table
 INSERT INTO
@@ -107,17 +108,17 @@ VALUES (1, 2, 1, '2024-03-10'),
     (2, 1, 1, '2024-02-20'),
     (1, 3, 2, '2024-03-05');
 
--- --------------------Check all data inserted successfully--------------------
+---------------------- Check all data inserted successfully ----------------------
 -- SELECT * FROM books;
 
 -- SELECT * FROM customers;
 
 -- SELECT * FROM orders;
 
--- --------------------Delete tables--------------------
+----------------------- Delete tables -----------------------
 -- DROP TABLE IF EXISTS orders, customers, books;
 
--- --------------------PostgreSQL Queries--------------------
+---------------------- PostgreSQL Queries ----------------------
 
 -- Query 1: Find books that are out of stock
 SELECT title FROM books WHERE stock = 0;
@@ -129,7 +130,7 @@ SELECT * FROM books WHERE price = ( SELECT MAX(price) FROM books );
 -- N.B: INNER JOIN ensures we only see customers who have actually placed orders.
 SELECT c.name, COUNT(o.id) AS total_orders
 FROM customers c
-    INNER JOIN orders o ON c.id = o.customer_id
+    JOIN orders o ON c.id = o.customer_id
 GROUP BY
     c.name;
 
